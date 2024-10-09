@@ -10,6 +10,7 @@ start-hbase.sh               # contenu dans ./services_hbase_thrift.sh
 hbase-daemon.sh start thrift # contenu dans ./services_hbase_thrift.sh
 
 # creation des variables
+mr_jar="/usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.2.jar"
 file_input=""
 dir_output=""
 mapper=""
@@ -23,7 +24,7 @@ hdfs dfs -put $file_input input
 hdfs dfs -rm -r output/$dir_output
 
 # Lancer le job MapReduce
-hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.2.jar \
+hadoop jar $mr_jar \
 -file $mapper -mapper "python3 $mapper" \
 -file $reducer -reducer "python3 $reducer" \
 -input input/$file_input \
