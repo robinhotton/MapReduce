@@ -10,11 +10,8 @@ start-hbase.sh               # contenu dans /root/services_hbase_thrift.sh
 hbase-daemon.sh start thrift # contenu dans /root/services_hbase_thrift.sh
 
 # creation des variables
-mr_jar="/usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.2.jar"
-file_input="exo1"
+file_input="Spotify_Most_Streamed_Songs.csv"
 dir_output="exo1"
-mapper="mapper.py"
-reducer="reducer.py"
 
 # Créer le répertoire input et copier les données dedans
 hdfs dfs -mkdir -p input
@@ -24,8 +21,8 @@ hdfs dfs -put $file_input input
 hdfs dfs -rm -r output/$dir_output
 
 # Lancer le job MapReduce
-hadoop jar $mr_jar \
--file $mapper -mapper "python3 $mapper" \
--file $reducer -reducer "python3 $reducer" \
+hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.2.jar \
+-file mapper.py -mapper "python3 mapper.py" \
+-file reducer.py -reducer "python3 reducer.py" \
 -input input/$file_input \
 -output output/$dir_output
